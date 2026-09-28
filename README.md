@@ -8,8 +8,9 @@ Runs the three-app video conference stack in Docker:
 | `video_conference` | `videoconference/video_conference` | Elixir/Phoenix backend — API + websocket, signs JWTs          |
 | `http3_server`   | `videoconference/http3_server` | Elixir/wtransport — WebTransport (HTTP/3) media server            |
 
-The three app repos (`video_conference_vite`, `video_conference`, `http3_server`)
-are expected to be cloned into this directory (see [Prerequisites](#prerequisites)).
+The three app repos (`video_conference_vite`, `video_conference`, `http3_server`).
+
+**!** This docker compose is developed to run the app on a local dev env.
 
 ## How it works
 
@@ -40,7 +41,8 @@ http3_server (media)
 
 - Docker + Docker Compose
 - `openssl` (for cert generation)
-- The three app repos cloned into this directory:
+- Two options:
+  1. The three app repos cloned into this directory:
 
   ```bash
   git clone https://github.com/AlexeyAlexey/video_conference_vite.git
@@ -49,6 +51,10 @@ http3_server (media)
   ```
 
   (If already cloned, `git checkout main && git pull` to get the latest.)
+
+  You should edit docker-compose.yml file. Look at commented "context" attribute.
+
+  2. The three app repos cloned by docker. It is used by default
 
 ## 1. Generate certificates
 
@@ -118,9 +124,7 @@ certificate warning (once).
 | Port | Service        | Purpose                                  |
 |------|----------------|------------------------------------------|
 | 8443 | frontend (nginx) | HTTPS SPA + API + websocket (main entry) |
-| 8080 | frontend (nginx) | HTTP SPA (fallback)                      |
-| 80   | video_conference | HTTP API + websocket (proxied by nginx) |
-| 443  | video_conference | HTTPS API + websocket                    |
+| 443  | video_conference | HTTPS API + websocket (proxied by nginx)                   |
 | 4433 | http3_server   | WebTransport media (TCP + UDP)           |
 
 ## Useful commands
@@ -150,3 +154,10 @@ docker compose build --no-cache   # rebuild from scratch
   `./scripts/gen_jwt_keys.sh` and `docker compose up -d --force-recreate`.
 - **`getUserMedia` / camera errors in the integrated browser** — that's a browser
   permission limitation, not a stack problem.
+
+
+# Info
+
+[Secrets Management](https://distr.sh/docs/agents/secrets/)
+
+[Docker Compose Secrets](https://distr.sh/docs/agents/docker-compose-secrets/)

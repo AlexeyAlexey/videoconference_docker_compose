@@ -5,8 +5,8 @@
 #               http3_server   (Elixir/wtransport) — WebTransport/HTTP3 media server
 #
 # Browser flow:
-#   1. http://localhost:8080            -> nginx (frontend SPA)
-#   2. http://localhost:80  (+ ws)      -> video_conference (API + Phoenix socket)
+#   1. http://localhost:8443            -> nginx (frontend SPA)
+#   2. https://localhost:443  (+ wss)      -> video_conference (API + Phoenix socket)
 #   3. https://localhost:4433 (WebTransport) -> http3_server (media), using the
 #      self-signed cert hash (HTTP3_SERVER_CERT_HASH) to pin the certificate.
 #
@@ -19,7 +19,10 @@ name: videoconference
 services:
   frontend:
     build:
-      context: ./video_conference_vite
+      context: https://github.com/AlexeyAlexey/video_conference_vite.git
+      # context: https://github.com/AlexeyAlexey/video_conference_vite.git#feature/unification
+      # context: https://github.com/AlexeyAlexey/video_conference_vite.git#branch-name - exxample when you want to get branch
+      # context: ./video_conference_vite # if you cloned this app into this directory
       args:
         # Origin of the SPA itself (used to build shared-link URLs).
         VITE_SCHEMA: https
@@ -33,10 +36,10 @@ services:
         VITE_MANAGER_SERVER_HOST: localhost
         VITE_MANAGER_SERVER_PORT: "8443"
         VITE_MANAGER_HTTP_SERVER_PORT: "8443"
-    image: videoconference/frontend
+    image: videoconference/frontend:latest
     container_name: vc_frontend
     ports:
-      - "8080:8080"
+      # - "8080:8080"
       - "8443:8443"
     volumes:
       - ./certs/frontend.crt:/certs/frontend.crt:ro
@@ -47,11 +50,13 @@ services:
 
   video_conference:
     build:
-      context: ./video_conference
-    image: videoconference/video_conference
+      context: https://github.com/AlexeyAlexey/video_conference.git
+      # context: https://github.com/AlexeyAlexey/video_conference.git#feature/unification
+      # context: ./video_conference
+    image: videoconference/video_conference:latest
     container_name: vc_backend
     ports:
-      - "80:80"     # http listener (browser API + websocket)
+      # - "80:80"     # http listener (browser API + websocket)
       - "443:443"   # https listener
     environment:
       MIX_ENV: prod
@@ -81,8 +86,10 @@ services:
 
   http3_server:
     build:
-      context: ./http3_server
-    image: videoconference/http3_server
+      context: https://github.com/AlexeyAlexey/http3_server.git
+      # context: https://github.com/AlexeyAlexey/http3_server.git#feature/unification
+      # context: ./http3_server
+    image: videoconference/http3_server:latest
     container_name: vc_http3
     ports:
       - "4433:4433/tcp"

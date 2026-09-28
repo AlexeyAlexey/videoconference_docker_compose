@@ -28,11 +28,7 @@ openssl x509 -in certs/server.crt -noout -dates
 
 # 3) Write/update HTTP3_SERVER_CERT_HASH in .env (docker compose reads it).
 if [[ -f .env ]] && grep -q '^HTTP3_SERVER_CERT_HASH=' .env; then
-  if [[ "$(uname)" == "Darwin" ]]; then
-    sed -i '' "s/^HTTP3_SERVER_CERT_HASH=.*/HTTP3_SERVER_CERT_HASH=$HASH/" .env
-  else
-    sed -i "s/^HTTP3_SERVER_CERT_HASH=.*/HTTP3_SERVER_CERT_HASH=$HASH/" .env
-  fi
+  sed -i "s/^HTTP3_SERVER_CERT_HASH=.*/HTTP3_SERVER_CERT_HASH=$HASH/" .env
 else
   echo "HTTP3_SERVER_CERT_HASH=$HASH" >> .env
 fi
