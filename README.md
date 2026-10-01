@@ -61,6 +61,8 @@ http3_server (media)
 All certs/keys are written to `certs/`. Run the all-in-one script:
 
 ```bash
+cp .env.example .env
+
 ./scripts/gen_all_certs.sh
 ```
 
@@ -155,6 +157,32 @@ docker compose build --no-cache   # rebuild from scratch
 - **`getUserMedia` / camera errors in the integrated browser** — that's a browser
   permission limitation, not a stack problem.
 
+# Remote Server
+
+You can run the app on a remote test server
+
+```bash
+git clone https://github.com/AlexeyAlexey/videoconference_docker_compose.git
+```
+
+If the app works on behalf of "nobody" (65534):
+
+```bash
+
+cd videoconference_docker_compose
+
+chown -R 65534:65534 ./data
+```
+
+You can use the following command to know UID:
+
+```bash
+docker ps
+
+docker exec -it <container_id> id
+```
+
+You should follow instructions from [Build & run](#3-build--run)
 
 # Info
 

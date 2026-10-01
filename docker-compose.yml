@@ -25,17 +25,17 @@ services:
       # context: ./video_conference_vite # if you cloned this app into this directory
       args:
         # Origin of the SPA itself (used to build shared-link URLs).
-        VITE_SCHEMA: https
-        VITE_HOST: localhost
-        VITE_PORT: "8443"
+        VITE_SCHEMA: "${FRONTEND_APP_VITE_SCHEMA}"
+        VITE_HOST: "${FRONTEND_APP_VITE_HOST}"
+        VITE_PORT: "${FRONTEND_APP_VITE_PORT}"
         # Phoenix (video_conference) endpoints the browser talks to. They point
         # at THIS origin (localhost:8443); nginx reverse-proxies the API and
         # websocket paths to the backend, so the browser only trusts one cert.
-        VITE_MANAGER_WEBSOCKET_SERVER_PROTOCOL: wss
-        VITE_MANAGER_HTTP_SERVER_PROTOCOL: https
-        VITE_MANAGER_SERVER_HOST: localhost
-        VITE_MANAGER_SERVER_PORT: "8443"
-        VITE_MANAGER_HTTP_SERVER_PORT: "8443"
+        VITE_MANAGER_WEBSOCKET_SERVER_PROTOCOL: "${FRONTEND_APP_VITE_MANAGER_WEBSOCKET_SERVER_PROTOCOL}"
+        VITE_MANAGER_HTTP_SERVER_PROTOCOL: "${FRONTEND_APP_VITE_MANAGER_HTTP_SERVER_PROTOCOL}"
+        VITE_MANAGER_SERVER_HOST: "${FRONTEND_APP_VITE_MANAGER_SERVER_HOST}"
+        VITE_MANAGER_SERVER_PORT: "${FRONTEND_APP_VITE_MANAGER_SERVER_PORT}"
+        VITE_MANAGER_HTTP_SERVER_PORT: "${FRONTEND_APP_VITE_MANAGER_HTTP_SERVER_PORT}"
     image: videoconference/frontend:latest
     container_name: vc_frontend
     ports:
@@ -59,21 +59,21 @@ services:
       # - "80:80"     # http listener (browser API + websocket)
       - "443:443"   # https listener
     environment:
-      MIX_ENV: prod
-      PHX_HOST: localhost
-      PORT: "443"
+      MIX_ENV: "${VIDEO_CONFERENCE_APP_MIX_ENV}"
+      PHX_HOST: "${VIDEO_CONFERENCE_APP_PHX_HOST}"
+      PORT: "${VIDEO_CONFERENCE_APP_PORT}"
       SSL_KEY_PATH: /app/certs/server.key
       SSL_CERT_PATH: /app/certs/server.crt
       # http3_server is reached by the BROWSER, so use the host-reachable name.
-      HTTP3_SERVER_HOST: localhost
-      HTTP3_SERVER_PORT: "4433"
+      HTTP3_SERVER_HOST: "${VIDEO_CONFERENCE_APP_HTTP3_SERVER_HOST}"
+      HTTP3_SERVER_PORT: "${VIDEO_CONFERENCE_APP_HTTP3_SERVER_PORT}"
       # SHA-256 of the self-signed cert (DER). The cert MUST be <= 12 days valid
       # for the browser to accept `serverCertificateHashes` pinning (W3C WebTransport).
       # Value comes from .env (set by scripts/gen_media_cert.sh).
-      HTTP3_SERVER_CERT_HASH: "${HTTP3_SERVER_CERT_HASH}"
+      HTTP3_SERVER_CERT_HASH: "${VIDEO_CONFERENCE_APP_HTTP3_SERVER_CERT_HASH}"
       DATABASE_PATH: /app/data/prod.db
-      JWT_SECRET: "${JWT_SECRET}"
-      SECRET_KEY_BASE: "${SECRET_KEY_BASE}"
+      JWT_SECRET: "${VIDEO_CONFERENCE_APP_JWT_SECRET}"
+      SECRET_KEY_BASE: "${VIDEO_CONFERENCE_APP_SECRET_KEY_BASE}"
     volumes:
       - ./certs:/app/certs:ro
       - ./data:/app/data
@@ -95,10 +95,10 @@ services:
       - "4433:4433/tcp"
       - "4433:4433/udp"
     environment:
-      MIX_ENV: prod
+      MIX_ENV: "${HTTP3_SERVER_APP_MIX_ENV}"
       # Bind all interfaces so the published port is reachable from the host.
-      HOST: 0.0.0.0
-      PORT: "4433"
+      HOST: "${HTTP3_SERVER_APP_HOST}"
+      PORT: "${HTTP3_SERVER_APP_PORT}"
       SSL_KEY_PATH: /app/certs/server.key
       SSL_CERT_PATH: /app/certs/server.crt
     volumes:

@@ -26,11 +26,11 @@ HASH="$(openssl x509 -in certs/server.crt -outform der | openssl dgst -sha256 -h
 echo "Media cert SHA-256 hash: $HASH"
 openssl x509 -in certs/server.crt -noout -dates
 
-# 3) Write/update HTTP3_SERVER_CERT_HASH in .env (docker compose reads it).
-if [[ -f .env ]] && grep -q '^HTTP3_SERVER_CERT_HASH=' .env; then
-  sed -i "s/^HTTP3_SERVER_CERT_HASH=.*/HTTP3_SERVER_CERT_HASH=$HASH/" .env
+# 3) Write/update VIDEO_CONFERENCE_APP_HTTP3_SERVER_CERT_HASH in .env (docker compose reads it).
+if [[ -f .env ]] && grep -q '^VIDEO_CONFERENCE_APP_HTTP3_SERVER_CERT_HASH=' .env; then
+  sed -i "s/^VIDEO_CONFERENCE_APP_HTTP3_SERVER_CERT_HASH=.*/VIDEO_CONFERENCE_APP_HTTP3_SERVER_CERT_HASH=$HASH/" .env
 else
-  echo "HTTP3_SERVER_CERT_HASH=$HASH" >> .env
+  echo "VIDEO_CONFERENCE_APP_HTTP3_SERVER_CERT_HASH=$HASH" >> .env
 fi
-echo "Wrote HTTP3_SERVER_CERT_HASH to .env"
+echo "Wrote VIDEO_CONFERENCE_APP_HTTP3_SERVER_CERT_HASH to .env"
 echo "Done. Cert expires in $DAYS days — re-run this script before then."
