@@ -63,7 +63,9 @@ All certs/keys are written to `certs/`. Run the all-in-one script:
 ```bash
 cp .env.example .env
 
-./scripts/gen_all_certs.sh
+./scripts/gen_all_certs.sh localhost
+
+# ./scripts/gen_all_certs.sh [HOST] (default: localhost)
 ```
 
 This runs the three individual scripts:
@@ -171,6 +173,8 @@ If the app works on behalf of "nobody" (65534):
 
 cd videoconference_docker_compose
 
+mkdir ./data
+
 chown -R 65534:65534 ./data
 ```
 
@@ -182,7 +186,12 @@ docker ps
 docker exec -it <container_id> id
 ```
 
-You should follow instructions from [Build & run](#3-build--run)
+You should follow instructions: 
+  [Generate certificates](1-generate-certificates)
+  
+  [Configure](#2-configure)
+  
+  [Build & run](#3-build--run)
 
 # Info
 

@@ -4,13 +4,14 @@
 #   - frontend cert (nginx HTTPS)                            [365-day]
 #   - JWT keypair  (video_conference <-> http3_server)
 #
-# Usage: scripts/gen_all_certs.sh
+# Usage: scripts/gen_all_certs.sh [HOST] (default: localhost)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 ./scripts/gen_media_cert.sh
 ./scripts/gen_frontend_cert.sh
 ./scripts/gen_jwt_keys.sh
+./scripts/setup_host.sh "$1"
 
 echo
 echo "All certs generated in certs/:"
