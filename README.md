@@ -187,11 +187,12 @@ docker exec -it <container_id> id
 ```
 
 You should follow instructions: 
-  [Generate certificates](1-generate-certificates)
+
+ -  [Generate certificates](1-generate-certificates)
   
-  [Configure](#2-configure)
+ - [Configure](#2-configure)
   
-  [Build & run](#3-build--run)
+ - [Build & run](#3-build--run)
 
 # Info
 
