@@ -74,6 +74,7 @@ services:
       DATABASE_PATH: /app/data/prod.db
       JWT_SECRET: "${VIDEO_CONFERENCE_APP_JWT_SECRET}"
       SECRET_KEY_BASE: "${VIDEO_CONFERENCE_APP_SECRET_KEY_BASE}"
+      SECRET_KEY_TO_ENCRYPT_PRIVATE_KEY: "${VIDEO_CONFERENCE_APP_SECRET_KEY_TO_ENCRYPT_PRIVATE_KEY}"
     volumes:
       - ./certs:/app/certs:ro
       - ./data:/app/data

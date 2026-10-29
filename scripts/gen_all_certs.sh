@@ -12,6 +12,7 @@ cd "$(dirname "$0")/.."
 ./scripts/gen_frontend_cert.sh
 ./scripts/gen_jwt_keys.sh
 ./scripts/setup_host.sh "$1"
+./scripts/video_conference_app.sh
 
 echo
 echo "All certs generated in certs/:"
